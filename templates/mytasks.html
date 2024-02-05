@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .task {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p><a href="/logout">Register</a></p>
+
+    {% if user %}
+    <h1>Welcome {{user}} to your task management dashborad</h1>
+    {% endif %}
+    <ul>
+        <li>taskID</li>
+        <li>Task name</li>
+        <li>status</li>
+        <li>Actions</li>
+
+    </ul>
+    {% if my_tasks|length == 0%}
+    <h1>no task available</h1>
+    {% endif %}
+
+
+    <form method="POST">
+      
+        <div class="form-group">
+          <label for="task_name">Add task</label>
+          <input type="text" id="task_name" name="task_name" required>
+        </div>
+        <button type="submit" class="btn">add</button>
+    </form>
+
+</body>
+</html>

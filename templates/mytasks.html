@@ -19,6 +19,7 @@
     {% if user %}
     <h1>Welcome {{user}} to your task management dashborad</h1>
     {% endif %}
+
     {% if my_tasks|length == 0%}
     <h1>no task available</h1>
     {% endif %}
@@ -30,6 +31,14 @@
         <p>Actions</p>
 
     </div>
+
+    {% if my_tasks|length > 0 %}
+        {% set task_id = 0 %}
+        {%for task in my_tasks%}
+            <div>{{task_id}}</div>
+        {%endfor%}
+        {% set task_id =+ 1 %}
+    {% endif %}
     
 
 

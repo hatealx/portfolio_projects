@@ -52,11 +52,17 @@ with task_app.app_context():
     db.create_all()
     print("done")
 
-
+@task_app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 #deining my apps routes 
 @task_app.route('/', methods=['GET', 'POST'])
 def index():
-    login_error = None    
+    login_error = None
+    if "name" in session:
+        return redirect(url_for('mytasks'))
+    
     if request.method == 'POST':
         name = request.form['name']
         password = request.form['password']
@@ -121,6 +127,7 @@ def mytasks():
             db.session().commit()
             print(session["tasks"])
             all_tasks_objects = Tasks.query.filter_by(user_name=session['name']).all()
+            
             all_tasks_dictionnary =  [task.to_dict() for task in all_tasks_objects]
             session["tasks"]=all_tasks_dictionnary
         print(session["tasks"])
@@ -129,7 +136,27 @@ def mytasks():
         return redirect(url_for("index"))
 
 
-@task_app.route('/logout')
+@task_app.route('/update_status', methods=['GET', 'POST'])
+def task_status():
+    status = request.form.get('status')
+    task_id = request.form.get('task_id')
+    task = Tasks.query.get_or_404(int(task_id))
+    if task:
+        task.status = status
+        db.session.commit()
+
+        # Fetch the updated tasks and store them in the session
+        all_tasks_objects = Tasks.query.filter_by(user_name=session["name"]).all()
+        all_tasks_dictionnary =  [task.to_dict() for task in all_tasks_objects]
+        session["tasks"] = all_tasks_dictionnary
+
+    return redirect(url_for('index'))
+    
+
+
+
+   
+@task_app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('name', None)
     return redirect(url_for("index")) 

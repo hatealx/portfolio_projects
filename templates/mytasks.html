@@ -2,29 +2,21 @@
 <html>
 <head>
     <title>My Tasks</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .task {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='mytasks.css')}}">
+    <script src="{{url_for('static', filename='mytasks.js')}}"></script>
 </head>
 <body>
-    <p><a href="/logout">Register</a></p>
+    <p><a href="/logout">Logout</a></p>
 
     {% if user %}
-    <h1>Welcome {{user}} to your task management dashborad</h1>
+    <h1>Welcome <span class="user_name">{{user}}</span> to your task management dashborad</h1>
     {% endif %}
 
     {% if my_tasks|length == 0%}
     <h1>no task available</h1>
     {% endif %}
 
-    <div>
+    <div class="rows">
         <p>taskID</p>
         <p>Task name</p>
         <p>status</p>
@@ -32,13 +24,30 @@
 
     </div>
 
-    {% if my_tasks|length > 0 %}
-        {% set task_id = 0 %}
-        {%for task in my_tasks%}
-            <div>{{task_id}}</div>
-        {%endfor%}
-        {% set task_id =+ 1 %}
+        {% if my_tasks|length > 0 %}
+        {% set ns = namespace(task_id=0) %}
+        {% for task in my_tasks %}
+            <div class="rows">
+                <p>{{ ns.task_id }}</p>
+                <p>{{ task["name"] }}</p>
+
+                <p>
+                    <input type="radio" id="notStarted{{ ns.task_id }}" name="status{{ ns.task_id }}" value="0" {{ 'checked' if task["status"] == '0' }} data-task-id="{{ task['id'] }}">
+                    <label for="notStarted{{ ns.task_id }}">Not yet started</label><br>
+
+                    <input type="radio" id="inProgress{{ ns.task_id }}" name="status{{ ns.task_id }}" value="1" {{ 'checked' if task['status'] == '1' }} data-task-id="{{ task['id'] }}">
+                    <label for="inProgress{{ ns.task_id }}">In progress</label><br>
+
+                    <input type="radio" id="completed{{ ns.task_id }}" name="status{{ ns.task_id }}" value="2" {{ 'checked' if task['status'] == '2' }} data-task-id="{{ task['id'] }}">
+                    <label for="completed{{ ns.task_id }}">Completed</label>
+                </p>
+                <p><a href="#">update</a><br><a href="#">delete</a></p>
+            </div>
+            {% set ns.task_id = ns.task_id + 1 %}
+        {% endfor %}
     {% endif %}
+
+
     
 
 

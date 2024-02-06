@@ -1,0 +1,8 @@
+.rows{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.user_name{
+    color: rgb(255, 153, 0);
+}

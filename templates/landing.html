@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TaskTamer - Manage Your Tasks Efficiently</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='landing.css')}}">
+</head>
+<body>
+    <div class="header">
+        <p class="name">TaskTamer </p>
+
+        <div class="cta">
+            <button onclick="location.href='/login'">Log In</button>
+            <button onclick="location.href='/logout'">Sign Up</button>
+        </div>
+        
+    </div>
+    <div class="content">
+        <h2>About TaskTamer</h2>
+        <p class="intro">TaskTamer is a task management system designed to help you manage your tasks efficiently. With TaskTamer, you can:</p>
+        <ul>
+            <li><span class="feature">Track your tasks:</span><span class="featurei">Track your tasks Keep an eye on all your tasks and their status in one place</span></li>
+            <img src="{{ url_for('static', filename='im1.jpg') }}" alt="My Image">
+
+            <li><span class="feature">Manage tasks:</span> <span class="featurei">Update task status as they progress from not yet started, to in progress, to done.</span></li>
+            <img src="{{ url_for('static', filename='img2.jpg') }}" alt="My Image">
+
+            <li><span class="feature">Organize your work:</span> <span class="featurei">Edit task names and delete tasks as needed.</span></li>
+            <img src="{{ url_for('static', filename='img3.jpg') }}" alt="My Image">
+
+        </ul>
+        <p>Ready to take control of your tasks? Get started with TaskTamer today!</p>
+    </div>
+    <div class="cta buts">
+        <button onclick="location.href='/login'">Log In</button>
+        <button onclick="location.href='/logout'">Sign Up</button>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 TaskTamer. All rights reserved.</p>
+    </footer>
+</body>
+</html>

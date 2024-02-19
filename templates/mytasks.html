@@ -6,59 +6,78 @@
     <script src="{{url_for('static', filename='mytasks.js')}}"></script>
 </head>
 <body>
-    <p><a href="/logout">Logout</a></p>
-
-    {% if user %}
-    <h1>Welcome <span class="user_name">{{user}}</span> to your task management dashborad</h1>
-    {% endif %}
-
-    {% if my_tasks|length == 0%}
-    <h1>no task available</h1>
-    {% endif %}
-
-    <div class="rows">
-        <p>taskID</p>
-        <p>Task name</p>
-        <p>status</p>
-        <p>Actions</p>
+    <div class="header">
+        <p class="name">TaskTamer </p>
+        <p class="logout1"><a  class="logout" href="/logout">Logout</a></p>
 
     </div>
 
+
+    {% if user %}
+    <h1 id="welcome">Welcome <span class="user_name">{{user}}</span> to your task management dashborad</h1>
+    {% endif %}
+    <form method="POST" id="create_form">
+
+        <div class="form-group">
+          <label for="task_name">Add task</label><br>
+          <input type="text" id="task_name" name="task_name" placeholder="add new task " required>
+        </div><br>
+        <button type="submit" class="btn">add</button>
+        
+    </form>
+    {% if my_tasks|length == 0%}
+    <h1 class="notask">no task available</h1>
+    {% endif %}
+
+    <div class="rows" id="task_attributes">
+        <p id="task_i">taskID</p>
+        <p id="task_n">Task name</p>
+        <p id="task_c">created At</p>
+        <p id="task_s">status</p>
+        <p id="task_a">Actions</p>
+    </div>
+    <div class="all_tasks">
         {% if my_tasks|length > 0 %}
         {% set ns = namespace(task_id=0) %}
         {% for task in my_tasks %}
             <div class="rows">
-                <p>{{ ns.task_id }}</p>
-                <p>{{ task["name"] }}</p>
-
+                <p ><span   class="t_id" >{{ ns.task_id }}</span><p>
+                <p class="taskName">{{ task["name"] }}</p>
+                <p class="t_date">{{ task["created_at"] }}</p>
                 <p>
-                    <input type="radio" id="notStarted{{ ns.task_id }}" name="status{{ ns.task_id }}" value="0" {{ 'checked' if task["status"] == '0' }} data-task-id="{{ task['id'] }}">
-                    <label for="notStarted{{ ns.task_id }}">Not yet started</label><br>
+                    <input class="radio" type="radio" id="notStarted{{ ns.task_id }}" name="status{{ ns.task_id }}" value="0" {{ 'checked' if task["status"] == '0' }} data-task-id="{{ task['id'] }} ">
+                    <label class="radion" for="notStarted{{ ns.task_id }}">Not yet started</label><br>
 
-                    <input type="radio" id="inProgress{{ ns.task_id }}" name="status{{ ns.task_id }}" value="1" {{ 'checked' if task['status'] == '1' }} data-task-id="{{ task['id'] }}">
-                    <label for="inProgress{{ ns.task_id }}">In progress</label><br>
+                    <input class="radio" type="radio" id="inProgress{{ ns.task_id }}" name="status{{ ns.task_id }}" value="1" {{ 'checked' if task['status'] == '1' }} data-task-id="{{ task['id'] }}">
+                    <label class="radioi" for="inProgress{{ ns.task_id }}">In progress</label><br>
 
-                    <input type="radio" id="completed{{ ns.task_id }}" name="status{{ ns.task_id }}" value="2" {{ 'checked' if task['status'] == '2' }} data-task-id="{{ task['id'] }}">
-                    <label for="completed{{ ns.task_id }}">Completed</label>
+                    <input class="radio" type="radio" id="completed{{ ns.task_id }}" name="status{{ ns.task_id }}" value="2" {{ 'checked' if task['status'] == '2' }} data-task-id="{{ task['id'] }}">
+                    <label class="radioc" for="completed{{ ns.task_id }}">Completed</label>
                 </p>
-                <p><a href="#">update</a><br><a href="#">delete</a></p>
+                <p> <a href="#" class="form edit"  name-task-id="/edit/{{ task['id'] | int }}"  > Edit name</a> <br><a class="delete" href="/delete/{{ task['id'] | int }}">delete</a></p>
             </div>
             {% set ns.task_id = ns.task_id + 1 %}
         {% endfor %}
     {% endif %}
+    </div>
 
 
+
+
+    <div id="popupForm" class="popupn">
+        <div class="popup-contentn">
+            <span class="close" >×</span>
+            <form id="updateForm" method="POST" >
+                <label for="taskNamee">New Task Name:</label><br>
+                <input type="text" id="taskNamee" name="taskNamee"><br>
+                <input type="submit" value="Submit" id="submite">
+            </form>
+        </div>
+    </div>
     
 
-
-    <form method="POST">
-
-        <div class="form-group">
-          <label for="task_name">Add task</label>
-          <input type="text" id="task_name" name="task_name" required>
-        </div>
-        <button type="submit" class="btn">add</button>
-    </form>
-
+    <footer class="footer">
+        <p>&copy; 2024 TaskTamer. All rights reserved.</p>
+    </footer>
 </body>
 </html>
